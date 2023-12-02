@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Dishcover.Areas.Identity.Data;
 namespace Dishcover
 {
     public class Program
@@ -5,6 +8,13 @@ namespace Dishcover
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+                        var connectionString = builder.Configuration.GetConnectionString("ApplicationDBContextConnection") ?? throw new InvalidOperationException("Connection string 'ApplicationDBContextConnection' not found.");
+
+                                    builder.Services.AddDbContext<ApplicationDBContext>(options =>
+                options.UseSqlServer(connectionString));
+
+                                                builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<ApplicationDBContext>();
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
@@ -23,12 +33,15 @@ namespace Dishcover
             app.UseStaticFiles();
 
             app.UseRouting();
+                        app.UseAuthentication();;
 
             app.UseAuthorization();
 
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
+
+            app.MapRazorPages();
 
             app.Run();
         }
