@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Dishcover.Areas.Identity.Data;
 using Dishcover.Models;
 
-namespace Dishcover
+namespace Dishcover.Controllers
 {
     public class IngredientsController : Controller
     {
@@ -22,9 +22,9 @@ namespace Dishcover
         // GET: Ingredients
         public async Task<IActionResult> Index()
         {
-              return _context.Ingredients != null ? 
-                          View(await _context.Ingredients.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDBContext.Ingredients'  is null.");
+            return _context.Ingredients != null ?
+                        View(await _context.Ingredients.ToListAsync()) :
+                        Problem("Entity set 'ApplicationDBContext.Ingredients'  is null.");
         }
 
         // GET: Ingredients/Details/5
@@ -150,14 +150,14 @@ namespace Dishcover
             {
                 _context.Ingredients.Remove(ingredient);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool IngredientExists(int id)
         {
-          return (_context.Ingredients?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Ingredients?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
