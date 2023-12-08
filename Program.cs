@@ -42,6 +42,13 @@ namespace Dishcover
 
             app.MapRazorPages();
 
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                ApplicationDBContext context = new ApplicationDBContext(services.GetRequiredService<DbContextOptions<ApplicationDBContext>>());
+                ApplicationDBContext.DataInitializer(context);
+            }
+
             app.Run();
         }
     }
