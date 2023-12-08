@@ -1,4 +1,5 @@
 ﻿using Dishcover.Areas.Identity.Data;
+using Dishcover.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,11 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
         : base(options)
     {
     }
+
+    public DbSet<Recipe> Recipes { get; set; } = default!;
+    public DbSet<Ingredient> Ingredients { get; set; } = default!;
+    public DbSet<IngredientMeasurementUnit> IngredientMeasurementUnits { get; set; } = default!;
+    public DbSet<RecipeIngredient> RecipeIngredients { get; set; } = default!;
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
