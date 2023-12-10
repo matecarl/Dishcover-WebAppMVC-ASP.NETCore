@@ -18,6 +18,7 @@ public class ApplicationDBContext : IdentityDbContext<ApplicationUser>
     public DbSet<Ingredient> Ingredients { get; set; } = default!;
     public DbSet<IngredientMeasurementUnit> IngredientMeasurementUnits { get; set; } = default!;
     public DbSet<RecipeIngredient> RecipeIngredients { get; set; } = default!;
+    public DbSet<RecipeCollection> RecipeCollections { get; set; } = default!;
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
