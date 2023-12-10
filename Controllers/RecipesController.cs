@@ -22,7 +22,9 @@ namespace Dishcover.Controllers
         // GET: Recipes
         public async Task<IActionResult> Index()
         {
-            var applicationDBContext = _context.Recipes.Include(r => r.User);
+            var applicationDBContext = _context.Recipes
+                .Where(r => !r.DeletedAt.HasValue)
+                .Include(r => r.User);
             return View(await applicationDBContext.ToListAsync());
         }
 
@@ -165,7 +167,8 @@ namespace Dishcover.Controllers
             var recipe = await _context.Recipes.FindAsync(id);
             if (recipe != null)
             {
-                _context.Recipes.Remove(recipe);
+                recipe.DeletedAt = DateTime.Now;
+                _context.Recipes.Update(recipe);
             }
 
             await _context.SaveChangesAsync();

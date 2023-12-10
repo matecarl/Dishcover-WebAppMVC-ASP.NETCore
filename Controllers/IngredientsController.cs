@@ -23,7 +23,9 @@ namespace Dishcover.Controllers
         public async Task<IActionResult> Index()
         {
             return _context.Ingredients != null ?
-                        View(await _context.Ingredients.ToListAsync()) :
+                        View(await _context.Ingredients
+                            .Where(i => !i.DeletedAt.HasValue)
+                            .ToListAsync()) :
                         Problem("Entity set 'ApplicationDBContext.Ingredients'  is null.");
         }
 
@@ -148,7 +150,8 @@ namespace Dishcover.Controllers
             var ingredient = await _context.Ingredients.FindAsync(id);
             if (ingredient != null)
             {
-                _context.Ingredients.Remove(ingredient);
+                ingredient.DeletedAt = DateTime.Now;
+                _context.Ingredients.Update(ingredient);
             }
 
             await _context.SaveChangesAsync();

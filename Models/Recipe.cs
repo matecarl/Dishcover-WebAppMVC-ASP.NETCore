@@ -28,6 +28,8 @@ namespace Dishcover.Models
         [Column(TypeName = "nvarchar(255)")]
         public string? ImagePath { get; set; }
 
+        public DateTime? DeletedAt { get; set; }
+
         public string UserId { get; set; }
         public ApplicationUser? User { get; set; }
 

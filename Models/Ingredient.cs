@@ -11,7 +11,10 @@ namespace Dishcover.Models
         [Column(TypeName = "nvarchar(100)")]
         public string Name { get; set; }
 
+        public DateTime? DeletedAt { get; set; }
+
         [Required]
         public ICollection<IngredientMeasurementUnit> SupportedUnits { get; set; }
+
     }
 }
