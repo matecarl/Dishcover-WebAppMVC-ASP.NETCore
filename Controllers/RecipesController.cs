@@ -48,7 +48,7 @@ namespace Dishcover.Controllers
         // GET: Recipes/Create
         public IActionResult Create()
         {
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "UserName");
             ViewData["Ingredients"] = new SelectList(_context.Ingredients, "Id", "Name");
             return View();
         }
