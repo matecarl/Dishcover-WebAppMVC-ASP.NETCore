@@ -20,5 +20,7 @@ public class ApplicationUser : IdentityUser
     public string LastName { get; set; }
 
     public ICollection<Recipe> Recipes { get; }
+
+    public ICollection<RecipeCollection> Collections { get; }
 }
 
