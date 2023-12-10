@@ -29,7 +29,7 @@ namespace Dishcover.Models
         public string? ImagePath { get; set; }
 
         public string UserId { get; set; }
-        public ApplicationUser User { get; set; }
+        public ApplicationUser? User { get; set; }
 
         public ICollection<RecipeIngredient> Ingredients { get; } = new List<RecipeIngredient>();
     }
