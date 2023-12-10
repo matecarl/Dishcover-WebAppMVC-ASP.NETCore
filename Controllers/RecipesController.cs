@@ -49,6 +49,7 @@ namespace Dishcover.Controllers
         public IActionResult Create()
         {
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
+            ViewData["Ingredients"] = new SelectList(_context.Ingredients, "Id", "Name");
             return View();
         }
 
@@ -57,10 +58,21 @@ namespace Dishcover.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,Instructions,CreatedAt,UpdatedAt,ImagePath,UserId")] Recipe recipe)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description,Instructions,UserId,IngredientInputs")] Recipe recipe)
         {
+
+
             if (ModelState.IsValid)
             {
+                foreach (var ingredient in recipe.IngredientInputs)
+                {
+                    recipe.Ingredients.Add(new RecipeIngredient()
+                    {
+                        Quantity = ingredient.Quantity,
+                        IngredientId = ingredient.IngredientId
+                    });
+                }
+
                 _context.Add(recipe);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

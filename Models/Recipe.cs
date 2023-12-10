@@ -32,5 +32,8 @@ namespace Dishcover.Models
         public ApplicationUser? User { get; set; }
 
         public ICollection<RecipeIngredient> Ingredients { get; } = new List<RecipeIngredient>();
+
+        [NotMapped]
+        public List<RecipeIngredient> IngredientInputs { get; set; }
     }
 }
