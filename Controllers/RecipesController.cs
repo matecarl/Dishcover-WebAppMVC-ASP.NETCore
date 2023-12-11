@@ -38,6 +38,8 @@ namespace Dishcover.Controllers
 
             var recipe = await _context.Recipes
                 .Include(r => r.User)
+                .Include(r => r.Ingredients)
+                .ThenInclude(i => i.Ingredient)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (recipe == null)
             {
