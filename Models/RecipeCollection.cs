@@ -18,6 +18,6 @@ namespace Dishcover.Models
         public string Userid { get; set; }
         public ApplicationUser? User { get; set; }
 
-        public ICollection<Recipe> SavedRecipes { get; } = new List<Recipe>();
+        public ICollection<Recipe> SavedRecipes { get; set; } = new List<Recipe>();
     }
 }

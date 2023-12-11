@@ -33,7 +33,7 @@ namespace Dishcover.Models
         public string UserId { get; set; }
         public ApplicationUser? User { get; set; }
 
-        public ICollection<RecipeIngredient> Ingredients { get; } = new List<RecipeIngredient>();
+        public ICollection<RecipeIngredient> Ingredients { get; set; } = new List<RecipeIngredient>();
 
         [NotMapped]
         public List<RecipeIngredient> IngredientInputs { get; set; }
