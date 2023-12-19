@@ -30,6 +30,18 @@
             @Html.DisplayFor(model => model.User.UserName)
         </dd>
     </dl>
+    <h4>Saved Recipes</h4>
+    <table class="table">
+        <tbody>
+            @foreach (var recipe in Model.SavedRecipes) {
+                <tr>
+                    <td>
+                        <a href="/Recipes/Details/@recipe.Id">@recipe.Name</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |

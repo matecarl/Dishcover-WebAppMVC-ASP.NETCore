@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Dishcover.Areas.Identity.Data;
 using Dishcover.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Dishcover.Controllers
 {
     public class RecipesController : Controller
     {
         private readonly ApplicationDBContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public RecipesController(ApplicationDBContext context)
+        public RecipesController(ApplicationDBContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Recipes
@@ -41,10 +44,16 @@ namespace Dishcover.Controllers
                 .Include(r => r.Ingredients)
                 .ThenInclude(i => i.Ingredient)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (recipe == null)
             {
                 return NotFound();
             }
+
+            ViewData["Collections"] = new SelectList(
+                _context.RecipeCollections
+                    .Where(rc => rc.Userid == _userManager.GetUserId(HttpContext.User) && !rc.SavedRecipes.Contains(recipe))
+                , "Id", "Name");
 
             return View(recipe);
         }

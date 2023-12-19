@@ -72,9 +72,17 @@
                 </div>
             }
         </dt>
-        
-
     </dl>
+    <form asp-action="AddRecipe" method="post" asp-controller="RecipeCollections">
+        <div class="col-sm-3">
+            <h4>Add to collection</h4>
+            <select asp-items="ViewBag.Collections" name="recipeCollectionId" class="form-control mb-2"></select>
+            <input type="hidden" name="recipeId" value="@Model.Id"/>
+        </div>
+        
+        <button type="submit" class="btn btn-primary btn-sm">Add to collection</button>
+    </form>
+
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |

@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Dishcover.Areas.Identity.Data;
 using Dishcover.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Dishcover.Controllers
 {
     public class RecipeCollectionsController : Controller
     {
         private readonly ApplicationDBContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public RecipeCollectionsController(ApplicationDBContext context)
+        public RecipeCollectionsController(ApplicationDBContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: RecipeCollections
@@ -35,8 +38,10 @@ namespace Dishcover.Controllers
             }
 
             var recipeCollection = await _context.RecipeCollections
+                .Include(r => r.SavedRecipes)
                 .Include(r => r.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (recipeCollection == null)
             {
                 return NotFound();
@@ -163,6 +168,39 @@ namespace Dishcover.Controllers
         private bool RecipeCollectionExists(int id)
         {
           return (_context.RecipeCollections?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddRecipe(int recipeId, int collectionId)
+        {
+            var collection = _context.RecipeCollections
+                .FirstOrDefault(rc => rc.Id == collectionId);
+            if (collection == null)
+            {
+                return NotFound();
+            }
+            if (collection.Userid != _userManager.GetUserId(HttpContext.User))
+            {
+                return Unauthorized();
+            }
+
+            var recipe = _context.Recipes
+                .FirstOrDefault(r => r.Id == recipeId);
+            if (recipe == null)
+            {
+                return NotFound();
+            }
+            if (collection.SavedRecipes.Contains(recipe))
+            {
+                return BadRequest();
+            }
+
+            collection.SavedRecipes.Add(recipe);
+
+            _context.SaveChanges();
+
+            return View(recipe);
         }
     }
 }
