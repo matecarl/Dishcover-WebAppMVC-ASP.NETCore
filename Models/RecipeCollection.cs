@@ -15,6 +15,11 @@ namespace Dishcover.Models
         [Column(TypeName = "nvarchar(500)")]
         public string Description { get; set; } = "";
 
+        [Required]
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+
+        public DateTime? UpdatedAt { get; set; }
+
         public string Userid { get; set; }
         public ApplicationUser? User { get; set; }
 
