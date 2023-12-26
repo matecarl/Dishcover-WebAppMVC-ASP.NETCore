@@ -35,28 +35,29 @@
 
             <h3>Ingredients</h3>
 
-            <div id="ingredientContainer">
+            <div class="row mb-2" id="ingredientContainer">
 
-                <div class="row mb-2" id="defaultIngredient">
-                    <div class="col">
-                        <select asp-for="IngredientInputs[0].IngredientId" class="form-control">
-                            <option selected>--Select an ingredient--</option>
-                            @foreach (SelectListItem ingredient in ViewBag.Ingredients)
-                            {
-                                <option value="@ingredient.Value">@ingredient.Text</option>
-                            }
-                        </select>
-                    </div>
-
-                    <div class="col">
-                        <input asp-for="IngredientInputs[0].Quantity" value="0" type="number" placeholder="Quantity" min="0" max="10000" class="form-control">
-                    </div>
-
-                    <div class="col">
-                        <button type="button" class="btn btn-danger" onclick="removeIngredient(this)">Remove</button>
-                    </div>
+                <div class="col">
+                    <select asp-for="IngredientInputs[0].IngredientId" class="form-control">
+                        <option selected disabled>--Select an ingredient--</option>
+                        @foreach (SelectListItem ingredient in ViewBag.Ingredients)
+                        {
+                            <option value="@ingredient.Value">@ingredient.Text</option>
+                        }
+                    </select>
                 </div>
+
+                <div class="col">
+                    <input asp-for="IngredientInputs[0].Quantity" value="0" type="number" placeholder="Quantity" min="0" max="10000" class="form-control">
+                </div>
+
+                <div class="col">
+                    <button type="button" class="btn btn-danger" onclick="removeIngredient(this)">Remove</button>
+                </div>
+
             </div>
+
+            <span asp-validation-for="IngredientInputs" class="text-danger"></span>
             
             <div class="form-group">
                 <button type="button" class="btn btn-success" id="btnAddIngredient">Add Ingredient</button>

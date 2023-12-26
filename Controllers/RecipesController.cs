@@ -74,10 +74,9 @@ namespace Dishcover.Controllers
         public async Task<IActionResult> Create([Bind("Id,Name,Description,Instructions,UserId,IngredientInputs")] Recipe recipe)
         {
 
-
             if (ModelState.IsValid)
             {
-                foreach (var ingredient in recipe.IngredientInputs)
+                foreach (var ingredient in recipe.IngredientInputs.Where(i => i.IngredientId != 0))
                 {
                     recipe.Ingredients.Add(new RecipeIngredient()
                     {
@@ -90,7 +89,9 @@ namespace Dishcover.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", recipe.UserId);
+
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "UserName");
+            ViewData["Ingredients"] = new SelectList(_context.Ingredients, "Id", "Name");
             return View(recipe);
         }
 

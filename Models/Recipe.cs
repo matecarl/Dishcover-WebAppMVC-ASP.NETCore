@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Dishcover.Areas.Identity.Data;
+using Dishcover.Utilities;
 
 namespace Dishcover.Models
 {
@@ -36,6 +37,7 @@ namespace Dishcover.Models
         public ICollection<RecipeIngredient> Ingredients { get; set; } = new List<RecipeIngredient>();
 
         [NotMapped]
+        [ValidIngredients]
         public List<RecipeIngredient> IngredientInputs { get; set; }
     }
 }

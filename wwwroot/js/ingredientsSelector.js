@@ -2,7 +2,9 @@ let counter = 0;
 let defaultIngredient;
 
 $(document).ready(function () {
-    defaultIngredient = $("#defaultIngredient").clone();
+    defaultIngredient = $("#defaultIngredient")
+        .clone();
+    defaultIngredient.removeAttr("id");
 
     $("#btnAddIngredient").click(function () {
         addIngredient();
