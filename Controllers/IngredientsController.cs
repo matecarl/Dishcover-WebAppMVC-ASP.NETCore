@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Dishcover.Areas.Identity.Data;
 using Dishcover.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Dishcover.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class IngredientsController : Controller
     {
         private readonly ApplicationDBContext _context;
@@ -20,6 +22,7 @@ namespace Dishcover.Controllers
         }
 
         // GET: Ingredients
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             return _context.Ingredients != null ?
@@ -30,6 +33,7 @@ namespace Dishcover.Controllers
         }
 
         // GET: Ingredients/Details/5
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Ingredients == null)

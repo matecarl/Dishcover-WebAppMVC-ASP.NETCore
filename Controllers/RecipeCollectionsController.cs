@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using Dishcover.Areas.Identity.Data;
 using Dishcover.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Dishcover.Controllers
 {
+    [Authorize]
     public class RecipeCollectionsController : Controller
     {
         private readonly ApplicationDBContext _context;
@@ -23,6 +25,7 @@ namespace Dishcover.Controllers
         }
 
         // GET: RecipeCollections
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var applicationDBContext = _context.RecipeCollections.Include(r => r.User);
@@ -30,6 +33,7 @@ namespace Dishcover.Controllers
         }
 
         // GET: RecipeCollections/Details/5
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.RecipeCollections == null)
