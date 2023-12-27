@@ -56,8 +56,7 @@ namespace Dishcover.Controllers
 
             ViewData["Collections"] = new SelectList(
                 _context.RecipeCollections
-                    .Where(rc => rc.Userid == _userManager.GetUserId(HttpContext.User) && !rc.SavedRecipes.Contains(recipe))
-                , "Id", "Name");
+                    .Where(rc => rc.Userid == _userManager.GetUserId(HttpContext.User) && !rc.SavedRecipes.Contains(recipe)), "Id", "Name");
 
             return View(recipe);
         }
@@ -65,7 +64,6 @@ namespace Dishcover.Controllers
         // GET: Recipes/Create
         public IActionResult Create()
         {
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "UserName");
             ViewData["Ingredients"] = new SelectList(_context.Ingredients, "Id", "Name");
             return View();
         }
@@ -75,8 +73,12 @@ namespace Dishcover.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,Instructions,UserId,IngredientInputs")] Recipe recipe)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description,Instructions,IngredientInputs")] Recipe recipe)
         {
+            recipe.UserId = _userManager.GetUserId(HttpContext.User);
+
+            ModelState.ClearValidationState("UserId");
+            await TryUpdateModelAsync(recipe);
 
             if (ModelState.IsValid)
             {
@@ -94,7 +96,6 @@ namespace Dishcover.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "UserName");
             ViewData["Ingredients"] = new SelectList(_context.Ingredients, "Id", "Name");
             return View(recipe);
         }
@@ -112,7 +113,6 @@ namespace Dishcover.Controllers
             {
                 return NotFound();
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", recipe.UserId);
             return View(recipe);
         }
 
@@ -121,7 +121,7 @@ namespace Dishcover.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Instructions,CreatedAt,UpdatedAt,ImagePath,UserId")] Recipe recipe)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Instructions,CreatedAt,UpdatedAt,ImagePath")] Recipe recipe)
         {
             if (id != recipe.Id)
             {
@@ -148,7 +148,6 @@ namespace Dishcover.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", recipe.UserId);
             return View(recipe);
         }
 

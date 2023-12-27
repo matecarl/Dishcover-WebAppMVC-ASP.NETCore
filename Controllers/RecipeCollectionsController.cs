@@ -57,7 +57,6 @@ namespace Dishcover.Controllers
         // GET: RecipeCollections/Create
         public IActionResult Create()
         {
-            ViewData["Userid"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
 
@@ -66,15 +65,19 @@ namespace Dishcover.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,Userid")] RecipeCollection recipeCollection)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description")] RecipeCollection recipeCollection)
         {
+            recipeCollection.Userid = _userManager.GetUserId(HttpContext.User);
+
+            ModelState.ClearValidationState("UserId");
+            await TryUpdateModelAsync(recipeCollection);
+
             if (ModelState.IsValid)
             {
                 _context.Add(recipeCollection);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Userid"] = new SelectList(_context.Users, "Id", "Id", recipeCollection.Userid);
             return View(recipeCollection);
         }
 
@@ -91,7 +94,6 @@ namespace Dishcover.Controllers
             {
                 return NotFound();
             }
-            ViewData["Userid"] = new SelectList(_context.Users, "Id", "Id", recipeCollection.Userid);
             return View(recipeCollection);
         }
 
@@ -100,7 +102,7 @@ namespace Dishcover.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Userid")] RecipeCollection recipeCollection)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description")] RecipeCollection recipeCollection)
         {
             if (id != recipeCollection.Id)
             {
@@ -127,7 +129,6 @@ namespace Dishcover.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Userid"] = new SelectList(_context.Users, "Id", "Id", recipeCollection.Userid);
             return View(recipeCollection);
         }
 
@@ -146,7 +147,6 @@ namespace Dishcover.Controllers
             {
                 return NotFound();
             }
-
             return View(recipeCollection);
         }
 
