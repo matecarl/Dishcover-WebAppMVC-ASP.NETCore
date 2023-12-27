@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
-}
+} 
 
 <h1>Details</h1>
 
@@ -73,18 +73,24 @@
             }
         </dt>
     </dl>
-    <form asp-action="AddRecipe" method="post" asp-controller="RecipeCollections">
-        <div class="col-sm-3">
-            <h4>Add to collection</h4>
-            <select asp-items="ViewBag.Collections" name="recipeCollectionId" class="form-control mb-2"></select>
-            <input type="hidden" name="recipeId" value="@Model.Id"/>
-        </div>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <form asp-action="AddRecipe" method="post" asp-controller="RecipeCollections">
+            <div class="col-sm-3">
+                <h4>Add to collection</h4>
+                <select asp-items="ViewBag.Collections" name="recipeCollectionId" class="form-control mb-2"></select>
+                <input type="hidden" name="recipeId" value="@Model.Id"/>
+            </div>
         
-        <button type="submit" class="btn btn-primary btn-sm">Add to collection</button>
-    </form>
-
+            <button type="submit" class="btn btn-primary btn-sm">Add to collection</button>
+        </form>
+    }
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    @if (User.Identity.IsAuthenticated)
+    {
+        <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
+        <span> |</span>
+    }
     <a asp-action="Index">Back to List</a>
 </div>
