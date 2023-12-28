@@ -14,7 +14,7 @@ namespace Dishcover.Models
         public DateTime? DeletedAt { get; set; }
 
         [Required]
-        public ICollection<IngredientMeasurementUnit> SupportedUnits { get; set; }
+        public ICollection<IngredientMeasurementUnit> SupportedUnits { get; set; } = new List<IngredientMeasurementUnit>();
 
     }
 }

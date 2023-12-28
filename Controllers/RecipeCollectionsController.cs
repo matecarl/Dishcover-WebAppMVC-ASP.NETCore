@@ -65,7 +65,7 @@ namespace Dishcover.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description")] RecipeCollection recipeCollection)
+        public async Task<IActionResult> Create([Bind("Name,Description")] RecipeCollection recipeCollection)
         {
             recipeCollection.Userid = _userManager.GetUserId(HttpContext.User);
 
@@ -102,12 +102,20 @@ namespace Dishcover.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description")] RecipeCollection recipeCollection)
+        public async Task<IActionResult> Edit(int id, [Bind("Name,Description")] RecipeCollection recipeCollectionRequest)
         {
-            if (id != recipeCollection.Id)
+            var recipeCollection = await _context.RecipeCollections.FirstOrDefaultAsync(rc => rc.Id == id);
+            if (recipeCollection == null)
             {
                 return NotFound();
             }
+
+            recipeCollection.Name = recipeCollectionRequest.Name;
+            recipeCollection.Description = recipeCollectionRequest.Description;
+            recipeCollection.UpdatedAt = DateTime.Now;
+
+            ModelState.Clear();
+            await TryUpdateModelAsync(recipeCollection);
 
             if (ModelState.IsValid)
             {
@@ -118,15 +126,8 @@ namespace Dishcover.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!RecipeCollectionExists(recipeCollection.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
                         throw;
                     }
-                }
                 return RedirectToAction(nameof(Index));
             }
             return View(recipeCollection);
@@ -169,11 +170,6 @@ namespace Dishcover.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool RecipeCollectionExists(int id)
-        {
-          return (_context.RecipeCollections?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddRecipe(int recipeId, int collectionId)
@@ -201,7 +197,6 @@ namespace Dishcover.Controllers
             }
 
             collection.SavedRecipes.Add(recipe);
-
             _context.SaveChanges();
 
             return View(recipe);
