@@ -178,8 +178,8 @@ namespace Dishcover.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddRecipe(int recipeId, int collectionId)
         {
-            var collection = _context.RecipeCollections
-                .FirstOrDefault(rc => rc.Id == collectionId);
+            var collection = await _context.RecipeCollections
+                .FirstOrDefaultAsync(rc => rc.Id == collectionId);
             if (collection == null)
             {
                 return NotFound();
