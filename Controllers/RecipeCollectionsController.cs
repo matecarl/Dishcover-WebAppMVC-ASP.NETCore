@@ -94,6 +94,10 @@ namespace Dishcover.Controllers
             {
                 return NotFound();
             }
+            if (recipeCollection.Userid != _userManager.GetUserId(HttpContext.User) && !HttpContext.User.IsInRole("Admin"))
+            {
+                return Unauthorized();
+            }
             return View(recipeCollection);
         }
 
@@ -108,6 +112,10 @@ namespace Dishcover.Controllers
             if (recipeCollection == null)
             {
                 return NotFound();
+            }
+            if (recipeCollection.Userid != _userManager.GetUserId(HttpContext.User) && !HttpContext.User.IsInRole("Admin"))
+            {
+                return Unauthorized();
             }
 
             recipeCollection.Name = recipeCollectionRequest.Name;
@@ -126,8 +134,8 @@ namespace Dishcover.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                        throw;
-                    }
+                    throw;
+                }
                 return RedirectToAction(nameof(Index));
             }
             return View(recipeCollection);
@@ -148,6 +156,10 @@ namespace Dishcover.Controllers
             {
                 return NotFound();
             }
+            if (recipeCollection.Userid != _userManager.GetUserId(HttpContext.User) && !HttpContext.User.IsInRole("Admin"))
+            {
+                return Unauthorized();
+            }
             return View(recipeCollection);
         }
 
@@ -163,9 +175,13 @@ namespace Dishcover.Controllers
             var recipeCollection = await _context.RecipeCollections.FindAsync(id);
             if (recipeCollection != null)
             {
+                if (recipeCollection.Userid != _userManager.GetUserId(HttpContext.User) && !HttpContext.User.IsInRole("Admin"))
+                {
+                    return Unauthorized();
+                }
                 _context.RecipeCollections.Remove(recipeCollection);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

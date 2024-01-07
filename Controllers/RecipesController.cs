@@ -9,6 +9,7 @@ using Dishcover.Areas.Identity.Data;
 using Dishcover.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using Dishcover.Migrations;
 
 namespace Dishcover.Controllers
 {
@@ -113,6 +114,11 @@ namespace Dishcover.Controllers
             {
                 return NotFound();
             }
+
+            if (recipe.UserId != _userManager.GetUserId(HttpContext.User) && !HttpContext.User.IsInRole("Admin"))
+            {
+                return Unauthorized();
+            }
             return View(recipe);
         }
 
@@ -127,6 +133,10 @@ namespace Dishcover.Controllers
             if (recipe == null)
             {
                 return NotFound();
+            }
+            if (recipe.UserId != _userManager.GetUserId(HttpContext.User) && !HttpContext.User.IsInRole("Admin"))
+            {
+                return Unauthorized();
             }
 
             recipe.Name = recipeRequest.Name;
@@ -147,8 +157,8 @@ namespace Dishcover.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                        throw;
-                    }
+                    throw;
+                }
                 return RedirectToAction(nameof(Index));
             }
             return View(recipe);
@@ -169,6 +179,10 @@ namespace Dishcover.Controllers
             {
                 return NotFound();
             }
+            if (recipe.UserId != _userManager.GetUserId(HttpContext.User) && !HttpContext.User.IsInRole("Admin"))
+            {
+                return Unauthorized();
+            }
 
             return View(recipe);
         }
@@ -185,6 +199,10 @@ namespace Dishcover.Controllers
             var recipe = await _context.Recipes.FindAsync(id);
             if (recipe != null)
             {
+                if (recipe.UserId != _userManager.GetUserId(HttpContext.User) && !HttpContext.User.IsInRole("Admin"))
+                {
+                    return Unauthorized();
+                }
                 recipe.DeletedAt = DateTime.Now;
                 _context.Recipes.Update(recipe);
             }
