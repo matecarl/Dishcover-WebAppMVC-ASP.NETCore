@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Dishcover.Areas.Identity.Data;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Dishcover.Services;
+using NETCore.MailKit.Infrastructure.Internal;
 
 namespace Dishcover
 {
@@ -15,15 +18,30 @@ namespace Dishcover
             builder.Services.AddDbContext<ApplicationDBContext>(options => options.UseSqlServer(connectionString));
 
             builder.Services
-                .AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
+                .AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDBContext>();
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
+            //builder.Services.AddTransient<IEmailSender, MailService>(); // Uncomment this to enable email sending
+
+            builder.Services.Configure<MailKitOptions>(options =>
+            {
+                options.Server = builder.Configuration["EmailSettings:Server"];
+                options.Port = Convert.ToInt32(builder.Configuration["EmailSettings:Port"]);
+                options.Account = builder.Configuration["EmailSettings:UserName"];
+                options.Password = builder.Configuration["EmailSettings:Password"];
+                options.SenderEmail = builder.Configuration["EmailSettings:SenderEmail"];
+                options.SenderName = builder.Configuration["EmailSettings:SenderName"];
+                options.Security = true;  // SSL or TLS enabled
+            });
+
             builder.Services.Configure<IdentityOptions>(options =>
             {
+                options.SignIn.RequireConfirmedEmail = true;
+
                 options.Password.RequiredLength = 6;
                 options.Password.RequireDigit = true;
                 options.Password.RequireNonAlphanumeric = false;
