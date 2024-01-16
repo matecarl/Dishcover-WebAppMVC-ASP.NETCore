@@ -8,5 +8,13 @@
   "AllowedHosts": "*",
   "ConnectionStrings": {
     "ApplicationDBContextConnection": "connection_string"
+  },
+  "EmailSettings": {
+    "Server": "smtp_server",
+    "Port": "smtp_port",
+    "SenderName": "name_sender",
+    "SenderEmail": "email_sender",
+    "UserName": "username_server",
+    "Password": "password_server"
   }
 }
