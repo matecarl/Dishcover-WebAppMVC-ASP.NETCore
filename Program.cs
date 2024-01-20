@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Dishcover.Services;
 using NETCore.MailKit.Infrastructure.Internal;
 
+using Microsoft.AspNetCore.Mvc.Razor;
+
 namespace Dishcover
 {
     public class Program
@@ -23,9 +25,23 @@ namespace Dishcover
                 .AddEntityFrameworkStores<ApplicationDBContext>();
 
             // Add services to the container.
-            builder.Services.AddControllersWithViews();
+            builder.Services.AddLocalization(opt => { opt.ResourcesPath = "Resources"; });
+            builder.Services.AddMvc()
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+                .AddDataAnnotationsLocalization();
 
-            //builder.Services.AddTransient<IEmailSender, MailService>(); // Uncomment this to enable email sending
+            builder.Services.Configure<RequestLocalizationOptions>(options =>
+            {
+                var supportedCultures = new[] { 
+                    "en",
+                    "es"
+                };
+                options.SetDefaultCulture(supportedCultures[0])
+                    .AddSupportedCultures(supportedCultures)
+                    .AddSupportedUICultures(supportedCultures);
+            });
+
+            builder.Services.AddTransient<IEmailSender, MailService>(); // Uncomment this to enable email sending
 
             builder.Services.Configure<MailKitOptions>(options =>
             {
@@ -50,6 +66,7 @@ namespace Dishcover
             });
 
             var app = builder.Build();
+            app.UseRequestLocalization();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
