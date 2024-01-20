@@ -8,9 +8,11 @@ namespace Dishcover.Models
         public int Id { get; set; }
 
         [Required]
+        [Display(Name = "Name")]
         [Column(TypeName = "nvarchar(100)")]
         public string Name { get; set; }
 
+        [Display(Name = "DeletedAt")]
         public DateTime? DeletedAt { get; set; }
 
         [Required]

@@ -1,14 +1,17 @@
-﻿@model Dishcover.Models.Recipe
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@model Dishcover.Models.Recipe
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = @Localizer["Page"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 } 
 
-<h1>Details</h1>
+<h1>@Localizer["Details"]</h1>
 
 <div>
-    <h4>Recipe</h4>
+    <h4>@Localizer["Recipe"]</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -54,10 +57,10 @@
         <dt>
             <div class="row">
                 <div class="col-sm-2">
-                    <strong>Ingredient</strong>
+                     <strong>@Localizer["Ingredient"]</strong>
                 </div>
                 <div class="col-sm-2">
-                    <strong>Quantity</strong>
+                    <strong>@Localizer["Quantity"]</strong>
                 </div>
             </div>
             @foreach (var ingredient in Model.Ingredients)
@@ -81,16 +84,16 @@
                 <select asp-items="ViewBag.Collections" name="recipeCollectionId" class="form-control mb-2"></select>
                 <input type="hidden" name="recipeId" value="@Model.Id"/>
             </div>
-        
-            <button type="submit" class="btn btn-primary btn-sm">Add to collection</button>
+
+            <button type="submit" class="btn btn-primary btn-sm">@Localizer["AddToCollection"]</button>
         </form>
     }
 </div>
 <div>
     @if (User.Identity.IsAuthenticated)
     {
-        <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
+        <a asp-action="Edit" asp-route-id="@Model?.Id">@Localizer["Edit"]</a>
         <span> |</span>
     }
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">@Localizer["Back"]</a>
 </div>

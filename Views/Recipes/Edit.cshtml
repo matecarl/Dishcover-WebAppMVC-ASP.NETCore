@@ -1,13 +1,16 @@
-﻿@model Dishcover.Models.Recipe
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@model Dishcover.Models.Recipe
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = @Localizer["Page"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Edit</h1>
+<h1>@Localizer["Edit"]</h1>
 
-<h4>Recipe</h4>
+<h4>@Localizer["Recipe"]</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -35,14 +38,14 @@
                 <span asp-validation-for="ImagePath" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value='@Localizer["Save"]' class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">@Localizer["Back"]</a>
 </div>
 
 @section Scripts {

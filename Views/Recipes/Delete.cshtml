@@ -1,15 +1,18 @@
-﻿@model Dishcover.Models.Recipe
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@model Dishcover.Models.Recipe
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = @Localizer["Page"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Delete</h1>
+<h1>@Localizer["Delete"]</h1>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>@Localizer["ConfirmDeleteMsg"]</h3>
 <div>
-    <h4>Recipe</h4>
+    <h4>@Localizer["Recipe"]</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -58,7 +61,7 @@
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="submit" value='@Localizer["Delete"]' class="btn btn-danger" /> |
+        <a asp-action="Index">@Localizer["Back"]</a>
     </form>
 </div>

@@ -1,13 +1,16 @@
-﻿@model Dishcover.Models.Recipe
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@model Dishcover.Models.Recipe
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = @Localizer["Page"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Create</h1>
+<h1>@Localizer["Create"]</h1>
 
-<h4>Recipe</h4>
+<h4>@Localizer["Recipe"]</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -29,13 +32,13 @@
                 <span asp-validation-for="Instructions" class="text-danger"></span>
             </div>
 
-            <h3>Ingredients</h3>
+            <h3>@Localizer["Ingredients"]</h3>
 
             <div class="row mb-2" id="ingredientContainer">
 
                 <div class="col">
                     <select asp-for="IngredientInputs[0].IngredientId" class="form-control">
-                        <option selected disabled>--Select an ingredient--</option>
+                        <option selected disabled>--@Localizer["IngredientSelect"]--</option>
                         @foreach (SelectListItem ingredient in ViewBag.Ingredients)
                         {
                             <option value="@ingredient.Value">@ingredient.Text</option>
@@ -48,7 +51,7 @@
                 </div>
 
                 <div class="col">
-                    <button type="button" class="btn btn-danger" onclick="removeIngredient(this)">Remove</button>
+                    <button type="button" class="btn btn-danger" onclick="removeIngredient(this)">@Localizer["Remove"]</button>
                 </div>
 
             </div>
@@ -56,11 +59,11 @@
             <span asp-validation-for="IngredientInputs" class="text-danger"></span>
             
             <div class="form-group">
-                <button type="button" class="btn btn-success" id="btnAddIngredient">Add Ingredient</button>
+                <button type="button" class="btn btn-success" id="btnAddIngredient">@Localizer["Add Ingredient"]</button>
             </div>
 
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary"/>
+                <input type="submit" value='@Localizer["Create"]' class="btn btn-primary"/>
             </div>
 
         </form>
@@ -68,7 +71,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">@Localizer["Back"]</a>
 </div>
 <script>
 

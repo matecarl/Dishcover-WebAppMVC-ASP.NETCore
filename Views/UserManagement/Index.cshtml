@@ -1,11 +1,14 @@
-﻿@model IEnumerable<Dishcover.Models.View.ManageUserViewModel>
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@model IEnumerable<Dishcover.Models.View.ManageUserViewModel>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = @Localizer["Page"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Manage users</h1>
+<h1>@Localizer["ManageUsers"]</h1>
 
 <table class="table">
     <thead>
@@ -49,7 +52,7 @@
             <td>
                 @if(User.IsInRole("Admin"))
                 {
-                    <a asp-action="EditRoles" asp-route-id="@item.Id">Manage</a>
+                    <a asp-action="EditRoles" asp-route-id="@item.Id">@Localizer["Manage"]</a>
                 }
             </td>
             <td>

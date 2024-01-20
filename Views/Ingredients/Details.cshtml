@@ -1,14 +1,17 @@
-﻿@model Dishcover.Models.Ingredient
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@model Dishcover.Models.Ingredient
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = @Localizer["Page"];
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
+<h1>@Localizer["Details"]</h1>
 
 <div>
-    <h4>Ingredient</h4>
+    <h4>@Localizer["Ingredient"]</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -22,8 +25,8 @@
 <div>
     @if(User.IsInRole("Admin"))
     {
-        <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
+        <a asp-action="Edit" asp-route-id="@Model?.Id">@Localizer["Edit"]</a>
         <span> |</span>
     }
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">@Localizer["Back"]</a>
 </div>
