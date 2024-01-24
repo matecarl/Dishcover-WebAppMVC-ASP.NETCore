@@ -6,6 +6,7 @@ using Dishcover.Services;
 using NETCore.MailKit.Infrastructure.Internal;
 
 using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.OpenApi.Models;
 
 namespace Dishcover
 {
@@ -65,7 +66,13 @@ namespace Dishcover
                 options.Password.RequireNonAlphanumeric = false;
             });
 
+            builder.Services.AddControllers();
+            builder.Services.AddSwaggerGen(c => {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "GroupSpace2023", Version = "v1" });
+            });
+
             var app = builder.Build();
+
             app.UseRequestLocalization();
 
             // Configure the HTTP request pipeline.
@@ -74,21 +81,32 @@ namespace Dishcover
                 app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
+            } 
+            else
+            {
+                app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => 
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "DishCover.v1"
+                ));
             }
 
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
-
             app.UseRouting();
+
             app.UseAuthentication();
 
             app.UseAuthorization();
+
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
 
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
             app.MapRazorPages();
+
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 
             using (var scope = app.Services.CreateScope())
             {
