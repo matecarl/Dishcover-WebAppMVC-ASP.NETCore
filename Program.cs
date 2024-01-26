@@ -7,6 +7,7 @@ using NETCore.MailKit.Infrastructure.Internal;
 
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.OpenApi.Models;
+using Dishcover.Areas.Identity.ErrorDescriber;
 
 namespace Dishcover
 {
@@ -23,7 +24,8 @@ namespace Dishcover
             builder.Services
                 .AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDBContext>();
+                .AddEntityFrameworkStores<ApplicationDBContext>()
+                .AddErrorDescriber<IdentityErrors>();
 
             // Add services to the container.
             builder.Services.AddLocalization(opt => { opt.ResourcesPath = "Resources"; });
