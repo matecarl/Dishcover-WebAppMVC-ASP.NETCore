@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Dishcover.Areas.Identity.Data;
+using Dishcover.Resources;
 
 namespace Dishcover.Models
 {
@@ -8,16 +9,16 @@ namespace Dishcover.Models
     {
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "Required")]
         [Display(Name = "Name")]
         [Column(TypeName = "nvarchar(100)")]
         public string Name { get; set; }
 
-        [Column(TypeName = "nvarchar(500)")]
+        [Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "Required")]
         [Display(Name = "Description")]
+        [Column(TypeName = "nvarchar(500)")]
         public string Description { get; set; } = "";
 
-        [Required]
         [Display(Name = "CreatedAt")]
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 

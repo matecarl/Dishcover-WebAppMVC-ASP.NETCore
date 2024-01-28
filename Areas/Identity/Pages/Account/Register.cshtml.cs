@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Dishcover.Resources;
 
 namespace Dishcover.Areas.Identity.Pages.Account
 {
@@ -71,31 +72,40 @@ namespace Dishcover.Areas.Identity.Pages.Account
         /// </summary>
         public class InputModel
         {
-            [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 2)]
+            [Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "Required")]
+            [StringLength(100,
+                ErrorMessageResourceType = typeof(SharedResources),
+                ErrorMessageResourceName = "StringLength",
+                MinimumLength = 2)]
             [Display(Name = "First name")]
             public string FirstName { get; set; }
 
-            [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 2)]
-            [Display(Name = "Last name")]
+            [Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "Required")]
+            [StringLength(100, 
+                ErrorMessageResourceType = typeof(SharedResources), 
+                ErrorMessageResourceName = "StringLength",
+                MinimumLength = 2)]
+            [Display(Name = "Last name")]                                                     
             public string LastName { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
-            [EmailAddress]
-            [Display(Name = "Email")]
+            [Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "Required")]
+            [EmailAddress(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "ValidEmail")]
+            [Display(Name = "Email")] 
             public string Email { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "Required")]
+            [StringLength(100,
+                ErrorMessageResourceType = typeof(SharedResources),
+                ErrorMessageResourceName = "StringLength",
+                MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
             public string Password { get; set; }
@@ -106,7 +116,9 @@ namespace Dishcover.Areas.Identity.Pages.Account
             /// </summary>
             [DataType(DataType.Password)]
             [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Compare("Password",
+                ErrorMessageResourceType = typeof(SharedResources),
+                ErrorMessageResourceName = "PasswordsMismatch")]
             public string ConfirmPassword { get; set; }
         }
 

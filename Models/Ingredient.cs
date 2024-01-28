@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Dishcover.Resources;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dishcover.Models
@@ -7,15 +8,15 @@ namespace Dishcover.Models
     {
         public int Id { get; set; }
 
-        [Required]
         [Display(Name = "Name")]
+        [Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "Required")]
         [Column(TypeName = "nvarchar(100)")]
         public string Name { get; set; }
 
         [Display(Name = "DeletedAt")]
         public DateTime? DeletedAt { get; set; }
 
-        [Required]
+        [Required(ErrorMessageResourceType = typeof(SharedResources), ErrorMessageResourceName = "Required")]
         public ICollection<IngredientMeasurementUnit> SupportedUnits { get; set; } = new List<IngredientMeasurementUnit>();
 
     }
